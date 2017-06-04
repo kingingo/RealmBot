@@ -6,7 +6,6 @@ import realmbase.RealmBase;
 import realmbot.bot.Bot;
 import realmbot.bot.BotListener;
 import realmbot.bot.move.MoveFollower;
-import realmbot.bot.move.StationaryMover;
 
 public class RealmBot {
 

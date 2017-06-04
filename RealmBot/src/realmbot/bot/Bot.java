@@ -46,6 +46,10 @@ public class Bot extends Client{
 		this.Bots.add(this);
 	}
 	
+	public int time(){
+		return (int) (System.currentTimeMillis() - getConnectTime());
+	}
+	
 	public boolean teleport(int objectId){
 		EntityData e = ObjectListener.getObject(this, objectId);
 		

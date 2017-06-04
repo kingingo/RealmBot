@@ -2,7 +2,6 @@ package realmbot.bot.move;
 
 import lombok.Getter;
 import lombok.Setter;
-import realmbase.Client;
 import realmbase.data.Location;
 import realmbot.bot.Bot;
 
@@ -14,17 +13,12 @@ public class StationaryMover implements MoveClass {
 	private Bot client;
 
 	@Override
-	public Location move(int time) {
+	public Location move() {
 		return getPosition();
 	}
 
 	@Override
 	public int getlastMoveTime() {
 		return lastMoveTime;
-	}
-
-	@Override
-	public void setClient(Client client) {
-		this.client=(Bot)client;
 	}
 }

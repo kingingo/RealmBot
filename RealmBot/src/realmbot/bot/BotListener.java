@@ -32,10 +32,6 @@ public class BotListener implements PacketListener{
 		PacketManager.addListener(this);
 	}
 	
-	public int time(Client client){
-		return (int) (System.currentTimeMillis() - client.getConnectTime());
-	}
-	
 	@Override
 	public boolean onReceive(Client c, Packet packet, Type from) {
 		Bot client = (Bot)c;
@@ -57,9 +53,8 @@ public class BotListener implements PacketListener{
 			
 			MovePacket mpacket = new MovePacket();
 			mpacket.setTickId(ntpacket.getTickId());
-			mpacket.setTime(time(client));
-			mpacket.setNewPosition(client.getMove().move( mpacket.getTime() - client.getMove().getlastMoveTime() ));
-			client.getMove().setLastMoveTime(mpacket.getTime());
+			mpacket.setTime(client.time());
+			mpacket.setNewPosition(client.getMove().move());
 			mpacket.setRecords(new LocationRecord[0]);
 //			RealmBase.println("Answering to New_TickPacket -> MovePacket ");
 			client.sendPacketToServer(mpacket);
@@ -69,7 +64,7 @@ public class BotListener implements PacketListener{
 		}else if(packet.getId() == GetXml.getPacketMapName().get("PING")){
 //			RealmBase.println("Answering to PingPacket -> PongPacket");
 			PingPacket ppacket = (PingPacket)packet;
-			client.sendPacketToServer(new PongPacket(ppacket.getSerial(), time(client)));
+			client.sendPacketToServer(new PongPacket(ppacket.getSerial(), client.time()));
 		}else if(packet.getId() == GetXml.getPacketMapName().get("FAILURE")){
 			FailurePacket fpacket = (FailurePacket)packet;
 			RealmBase.println("FailurePacket-> "+fpacket.getErrorId()+" "+fpacket.getErrorDescription());
@@ -80,7 +75,7 @@ public class BotListener implements PacketListener{
 		}else if(packet.getId() == GetXml.getPacketMapName().get("GOTO")){
 			GoToPacket gpacket = (GoToPacket)packet;
 			
-			client.sendPacketToServer(new GoToAckPacket(time(client)));
+			client.sendPacketToServer(new GoToAckPacket(client.time()));
 		}else if(packet.getId() == GetXml.getPacketMapName().get("MAPINFO")){
 			client.setMapInfo(((MapInfoPacket)packet));
 		}else if(packet.getId() == GetXml.getPacketMapName().get("RECONNECT")){
