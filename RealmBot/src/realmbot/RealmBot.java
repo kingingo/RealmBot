@@ -5,6 +5,7 @@ import java.util.Iterator;
 import realmbase.RealmBase;
 import realmbot.bot.Bot;
 import realmbot.bot.BotListener;
+import realmbot.bot.move.MoveFollower;
 import realmbot.bot.move.StationaryMover;
 
 public class RealmBot {
@@ -14,7 +15,7 @@ public class RealmBot {
 		RealmBase.println("starting...");
 		new BotListener();
 		
-		Bot bot = new Bot("kingingohd@gmail.com", "e8PKU1dSVNvKiXmEKKEq", new StationaryMover());
+		Bot bot = new Bot("starteaker@googlemail.com", "HqYeQxTf", new MoveFollower("kingingoo"));
 		bot.connect("USMIDWEST");
 		boolean con = true;
 		while (con) {

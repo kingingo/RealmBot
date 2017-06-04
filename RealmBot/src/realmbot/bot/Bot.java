@@ -15,14 +15,18 @@ import realmbase.GetXml;
 import realmbase.RealmBase;
 import realmbase.data.AccountData;
 import realmbase.data.Callback;
-import realmbase.data.Location;
+import realmbase.data.EntityData;
 import realmbase.data.Type;
+import realmbase.listener.ObjectListener;
 import realmbase.listener.PacketManager;
 import realmbase.packets.Packet;
 import realmbase.packets.client.HelloPacket;
+import realmbase.packets.client.TeleportPacket;
+import realmbase.packets.server.MapInfoPacket;
 import realmbot.bot.move.MoveClass;
 
 @Getter
+@Setter
 public class Bot extends Client{
 	@Getter
 	private static final List<Bot> Bots = new Vector<>();
@@ -31,6 +35,7 @@ public class Bot extends Client{
 	private String password;
 	private AccountData accountData;
 	private MoveClass move;
+	private MapInfoPacket mapInfo;
 	
 	public Bot(String username,String password,MoveClass move){
 		this.username=username;
@@ -39,6 +44,17 @@ public class Bot extends Client{
 		this.move=move;
 		this.move.setClient(this);
 		this.Bots.add(this);
+	}
+	
+	public boolean teleport(int objectId){
+		EntityData e = ObjectListener.getObject(this, objectId);
+		
+		if(e!=null&&mapInfo.isAllowPlayerTeleport()){
+			TeleportPacket tpacket = new TeleportPacket(e.getStatus().getObjectId());
+			sendPacketToServer(tpacket);
+			return true;
+		}
+		return false;
 	}
 	
 	public void connect(InetSocketAddress adress){
