@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
+import java.nio.file.WatchEvent.Kind;
 import java.util.List;
 import java.util.Vector;
 
@@ -12,16 +13,21 @@ import lombok.Setter;
 import realmbase.Client;
 import realmbase.GetUrl;
 import realmbase.GetXml;
+import realmbase.Parameter;
 import realmbase.RealmBase;
 import realmbase.data.AccountData;
 import realmbase.data.Callback;
 import realmbase.data.EntityData;
 import realmbase.data.Type;
+import realmbase.data.portal.PortalData;
+import realmbase.encryption.RC4;
 import realmbase.listener.ObjectListener;
 import realmbase.listener.PacketManager;
 import realmbase.packets.Packet;
+import realmbase.packets.client.CreatePacket;
 import realmbase.packets.client.HelloPacket;
 import realmbase.packets.client.TeleportPacket;
+import realmbase.packets.client.UsePortalPacket;
 import realmbase.packets.server.MapInfoPacket;
 import realmbot.bot.move.MoveClass;
 
@@ -46,6 +52,13 @@ public class Bot extends Client{
 		this.Bots.add(this);
 	}
 	
+	public void usePortal(PortalData portal){
+		if(getMove().getPosition().distanceTo(portal.getStatus().getPosition()) < 1){
+			UsePortalPacket packet = new UsePortalPacket(portal);
+			sendPacketToServer(packet);
+		}
+	}
+	
 	public int time(){
 		return (int) (System.currentTimeMillis() - getConnectTime());
 	}
@@ -62,12 +75,22 @@ public class Bot extends Client{
 	}
 	
 	public void connect(InetSocketAddress adress){
+		connect(new HelloPacket(username, password), adress);
+	}
+	
+	public void connect(HelloPacket packet, InetSocketAddress adress){
 		connect(adress, new Callback<Client>() {
 			
 			@Override
 			public void call(Client client, Throwable exception) {
-				RealmBase.println("Send HelloPacket...");
-				sendPacketToServer(new HelloPacket(username,password));
+				if(exception != null){
+					exception.printStackTrace();
+					disconnect();
+				}else{
+					
+					RealmBase.println(client,"Send HelloPacket... "+packet.toString());
+					sendPacketToServer(packet);
+				}
 			}
 		});
 	}
@@ -100,7 +123,7 @@ public class Bot extends Client{
 							this.remoteBufferIndex -= packetLength;
 							this.remoteRecvRC4.cipher(packetBytes);
 							if(packetId!=74&&packetId!=33&&packetId!=18&&packetId!=101&&packetId!=1&&packetId!=35&&packetId!=52&&packetId!=102&&packetId!=69)
-								RealmBase.println("Server -> Client: Id:"+(GetXml.getPacketMap().containsKey(String.valueOf(packetId)) ? GetXml.getPacketMap().get(String.valueOf(packetId)) : packetId));
+								RealmBase.println(this,"Server -> Client: Id:"+(GetXml.getPacketMap().containsKey(String.valueOf(packetId)) ? GetXml.getPacketMap().get(String.valueOf(packetId)) : packetId));
 							
 							Packet packet = Packet.create(packetId, packetBytes);
 							PacketManager.receive(this, packet, Type.SERVER);

@@ -1,11 +1,17 @@
 package realmbot;
 
+import java.net.InetSocketAddress;
+import java.util.HashMap;
 import java.util.Iterator;
 
+import realmbase.GetXml;
+import realmbase.Parameter;
 import realmbase.RealmBase;
+import realmbase.data.Callback;
 import realmbot.bot.Bot;
 import realmbot.bot.BotListener;
 import realmbot.bot.move.MoveFollower;
+import realmbot.bot.move.MoveTarget;
 
 public class RealmBot {
 
@@ -13,9 +19,17 @@ public class RealmBot {
 		RealmBase.init();
 		RealmBase.println("starting...");
 		new BotListener();
+//		HashMap<String,String> bots = GetXml.getBotList();
 		
-		Bot bot = new Bot("starteaker@googlemail.com", "HqYeQxTf", new MoveFollower("kingingoo"));
-		bot.connect("USMIDWEST");
+		Bot bot = new Bot("kingingohd@gmail.com","e8PKU1dSVNvKiXmEKKEq",new MoveFollower("kingingo"));
+		bot.connect("EUNORTH");
+		
+//		for(String email : bots.keySet()){
+//			Bot bot = new Bot(email, bots.get(email), new MoveFollower("Kingingo"));
+//			bot.connect("EUNORTH");
+//			break;
+//		}
+		
 		boolean con = true;
 		while (con) {
 			int cores = Runtime.getRuntime().availableProcessors();
@@ -24,7 +38,7 @@ public class RealmBot {
 			Iterator<Bot> i = Bot.getBots().iterator();
 			while (i.hasNext()) {
 				final Bot client = i.next();
-				if (client == null || (client.getRemoteSocket()!=null&&client.getRemoteSocket().isClosed())) {
+				if (client == null) {
 					if(client != null)client.disconnect();
 					i.remove();
 					continue;

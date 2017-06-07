@@ -3,6 +3,7 @@ package realmbot.bot.move;
 import lombok.Getter;
 import lombok.Setter;
 import realmbase.Parameter;
+import realmbase.RealmBase;
 import realmbase.data.Callback;
 import realmbase.data.Location;
 import realmbot.bot.Bot;
@@ -27,14 +28,16 @@ public class MoveTarget implements MoveClass {
 	public Location move() {
 		int time = client.time()-lastMoveTime;
 		setLastMoveTime(client.time());
-		if(getPosition().distanceSquaredTo(getTarget()) > 0.2){
-			if(reachTarget!=null)reachTarget.call(this, null);
+		if(getPosition().distanceSquaredTo(getTarget()) < 0.2){
+			if(reachTarget!=null)
+				reachTarget.call(this, null);
+			
 			return getPosition();
 		}
-		return getPosition(time, getTarget());
+		return getCalculatePosition(time, getTarget());
 	}
 	
-	public Location getPosition(int time, Location targ) {
+	public Location getCalculatePosition(int time, Location targ) {
 		float angle = getPosition().getAngleTo(targ);
 		Location loc = getPosition();
 		

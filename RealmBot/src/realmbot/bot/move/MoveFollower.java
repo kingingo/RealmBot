@@ -1,10 +1,14 @@
 package realmbot.bot.move;
 
+import java.util.HashMap;
+
 import lombok.Getter;
 import lombok.Setter;
 import realmbase.Parameter;
+import realmbase.RealmBase;
 import realmbase.data.Location;
 import realmbase.data.PlayerData;
+import realmbase.data.portal.PortalData;
 import realmbase.listener.ObjectListener;
 import realmbot.bot.Bot;
 
@@ -17,6 +21,7 @@ public class MoveFollower implements MoveClass {
 	private float followDist = 0.25f;
 	private boolean teleport = false;
 	private String followTarget;
+	private Location followPosition;
 	
 	public MoveFollower() {}
 	
@@ -29,15 +34,30 @@ public class MoveFollower implements MoveClass {
 		int time = client.time()-lastMoveTime;
 		setLastMoveTime(client.time());
 		PlayerData e = followTarget.isEmpty()?null:ObjectListener.getPlayerData(getClient(), followTarget);
+	
 		if (e != null) {
+			followPosition = e.getStatus().getPosition();
 			if (teleport && e.getStatus().getPosition().distanceSquaredTo(getPosition()) > 144 && client.getMapInfo().isAllowPlayerTeleport()) {
 				client.teleport(e.getStatus().getObjectId());
 			}
 			if (e.getStatus().getPosition().distanceSquaredTo(getPosition()) > followDist) {
 				return getFollowPosition(time, e.getStatus().getPosition());
 			}
+		}else{
+			if(followPosition!=null){
+				HashMap<Integer,PortalData> portals = ObjectListener.getPortals().get(client);
+				
+				for(PortalData portal : portals.values()){
+					if(portal.getStatus().getPosition().distanceTo(followPosition)<1){
+						RealmBase.println(getClient(), "Portal: "+portal.getName());
+						client.usePortal(portal);
+						followPosition = null;
+						break;
+					}
+				}
+			}
 		}
-		return getPosition();
+		return (followPosition!=null?followPosition:getPosition());
 	}
 	
 	public Location getFollowPosition(float time, Location targ) {
