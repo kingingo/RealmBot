@@ -74,6 +74,10 @@ public class Bot extends Client{
 		return false;
 	}
 	
+	public void connect(){
+		connect(Parameter.remoteHost);
+	}
+	
 	public void connect(InetSocketAddress adress){
 		connect(new HelloPacket(username, password), adress);
 	}
@@ -88,7 +92,7 @@ public class Bot extends Client{
 					disconnect();
 				}else{
 					
-					RealmBase.println(client,"Send HelloPacket... "+packet.toString());
+					RealmBase.println(client,"Send HelloPacket... ");
 					sendPacketToServer(packet);
 				}
 			}

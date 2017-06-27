@@ -1,20 +1,4 @@
-[RealmBase]: starting...
-[RealmBase]: Connected wtih 54.211.143.166
-[RealmBase]: Send HelloPacket...
-[RealmBase]: Server -> Client: Id:MAPINFO
-[RealmBase]: Received MapInfo -> sending LoadPacket
-[RealmBase]: Server -> Client: Id:CREATE_SUCCESS
-[RealmBase]: Connected successfull!
-[RealmBase]: Server -> Client: Id:GLOBAL_NOTIFICATION
-[RealmBase]: Server -> Client: Id:ACCOUNTLIST
-[RealmBase]: Server -> Client: Id:ACCOUNTLIST
-[RealmBase]: Server -> Client: Id:NOTIFICATION
-[RealmBase]: Server -> Client: Id:NOTIFICATION
-[RealmBase]: Server -> Client: Id:NOTIFICATION
-[RealmBase]: Server -> Client: Id:NOTIFICATION
-[RealmBase]: Server -> Client: Id:NOTIFICATION
-[RealmBase]: Server -> Client: Id:NOTIFICATION
-[RealmBase]: Server -> Client: Id:NOTIFICATION
-[RealmBase]: Server -> Client: Id:NOTIFICATION
-[RealmBase]: Server -> Client: Id:NOTIFICATION
-[RealmBase]: Server -> Client: Id:NOTIFICATION
+[2017-06-27 17:42:39 | RealmBase]: starting...
+[2017-06-27 17:42:40 | RealmBase]: 2
+[2017-06-27 17:42:40 | RealmBase]: remoteSocket: false
+[2017-06-27 17:42:40 | RealmBase]: remoteAddress: false

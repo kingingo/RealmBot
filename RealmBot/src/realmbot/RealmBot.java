@@ -8,10 +8,13 @@ import realmbase.GetXml;
 import realmbase.Parameter;
 import realmbase.RealmBase;
 import realmbase.data.Callback;
+import realmbase.utils.Milis;
 import realmbot.bot.Bot;
 import realmbot.bot.BotListener;
 import realmbot.bot.move.MoveFollower;
+import realmbot.bot.move.MoveFollowerCrazy;
 import realmbot.bot.move.MoveTarget;
+import realmbot.bot.move.StationaryMover;
 
 public class RealmBot {
 
@@ -19,15 +22,16 @@ public class RealmBot {
 		RealmBase.init();
 		RealmBase.println("starting...");
 		new BotListener();
-//		HashMap<String,String> bots = GetXml.getBotList();
+
+		HashMap<String,String> bots = GetXml.getBotList();
 		
-		Bot bot = new Bot("kingingohd@gmail.com","e8PKU1dSVNvKiXmEKKEq",new MoveFollower("kingingo"));
-		bot.connect("EUNORTH");
-		
+		String email = (String) bots.keySet().toArray()[0];
+		Bot bot = new Bot(email,bots.get(email), new StationaryMover());
+		bot.connect();
+
 //		for(String email : bots.keySet()){
-//			Bot bot = new Bot(email, bots.get(email), new MoveFollower("Kingingo"));
+//			Bot bot = new Bot(email, bots.get(email), new MoveFollowerCrazy(2, Milis.SECOND));
 //			bot.connect("EUNORTH");
-//			break;
 //		}
 		
 		boolean con = true;

@@ -20,7 +20,9 @@ import realmbase.packets.client.GoToAckPacket;
 import realmbase.packets.client.HelloPacket;
 import realmbase.packets.client.LoadPacket;
 import realmbase.packets.client.MovePacket;
+import realmbase.packets.client.PlayerTextPacket;
 import realmbase.packets.client.PongPacket;
+import realmbase.packets.client.ShootAckPacket;
 import realmbase.packets.client.UpdateAckPacket;
 import realmbase.packets.server.Create_SuccessPacket;
 import realmbase.packets.server.FailurePacket;
@@ -29,6 +31,8 @@ import realmbase.packets.server.MapInfoPacket;
 import realmbase.packets.server.New_TickPacket;
 import realmbase.packets.server.PingPacket;
 import realmbase.packets.server.ReconnectPacket;
+import realmbase.packets.server.ShootPacket;
+import realmbase.packets.server.TextPacket;
 import realmbase.packets.server.UpdatePacket;
 
 public class BotListener implements PacketListener{
@@ -48,7 +52,7 @@ public class BotListener implements PacketListener{
 				
 			}else{
 				client.sendPacketToServer(new LoadPacket(Integer.valueOf(client.getAccountData().getCharakters()[0].id),false));
-//				RealmBase.println(client,"Received MapInfo -> sending LoadPacket");
+				RealmBase.println(client,"Received MapInfo -> sending LoadPacket");
 			}
 		}else if(packet.getId() == GetXml.getPacketMapName().get("NEW_TICK")){
 			New_TickPacket ntpacket = (New_TickPacket)packet;
@@ -94,14 +98,23 @@ public class BotListener implements PacketListener{
 			client.setClientId(cpacket.getObjectId());
 //			RealmBase.println(client,"Connected successfull! "+cpacket.toString());
 		}else if(packet.getId() == GetXml.getPacketMapName().get("GOTO")){
-			GoToPacket gpacket = (GoToPacket)packet;
-			
+//			GoToPacket gpacket = (GoToPacket)packet;
 			client.sendPacketToServer(new GoToAckPacket(client.time()));
+		}else if(packet.getId() == GetXml.getPacketMapName().get("SHOOT")){
+			ShootPacket spacket = (ShootPacket)packet;
+//			RealmBase.println(client,"ShootPackets -> "+spacket.toString());
+			client.sendPacketToServer(new ShootAckPacket(client.time()));
+		}else if(packet.getId() == GetXml.getPacketMapName().get("TEXT")){
+			TextPacket tpacket = (TextPacket) packet;
+			
+			if(tpacket.getName().equalsIgnoreCase("kingingoo")||tpacket.getName().equalsIgnoreCase("kingingo")){
+				client.sendPacketToServer(new PlayerTextPacket(tpacket.getText()));
+			}
 		}else if(packet.getId() == GetXml.getPacketMapName().get("MAPINFO")){
 			client.setMapInfo(((MapInfoPacket)packet));
 		}else if(packet.getId() == GetXml.getPacketMapName().get("RECONNECT")){
 			ReconnectPacket rpacket = (ReconnectPacket)packet;
-			RealmBase.println(client,"Detailes: "+rpacket.toString());
+//			RealmBase.println(client,"Detailes: "+rpacket.toString());
 			
 			String host = rpacket.getHost();
 			int port = rpacket.getPort();
