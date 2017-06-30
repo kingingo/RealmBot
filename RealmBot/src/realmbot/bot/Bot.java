@@ -11,8 +11,6 @@ import java.util.Vector;
 import lombok.Getter;
 import lombok.Setter;
 import realmbase.Client;
-import realmbase.GetUrl;
-import realmbase.GetXml;
 import realmbase.Parameter;
 import realmbase.RealmBase;
 import realmbase.data.AccountData;
@@ -29,6 +27,10 @@ import realmbase.packets.client.HelloPacket;
 import realmbase.packets.client.TeleportPacket;
 import realmbase.packets.client.UsePortalPacket;
 import realmbase.packets.server.MapInfoPacket;
+import realmbase.xml.GetUrl;
+import realmbase.xml.GetXml;
+import realmbot.bot.attack.AttackClass;
+import realmbot.bot.attack.AttackWizard;
 import realmbot.bot.move.MoveClass;
 
 @Getter
@@ -41,6 +43,7 @@ public class Bot extends Client{
 	private String password;
 	private AccountData accountData;
 	private MoveClass move;
+//	private AttackClass attack;
 	private MapInfoPacket mapInfo;
 	
 	public Bot(String username,String password,MoveClass move){
@@ -48,6 +51,8 @@ public class Bot extends Client{
 		this.password=password;
 		this.accountData=GetUrl.loadAccount(username, password);
 		this.move=move;
+//		this.attack=new AttackWizard();
+//		this.attack.setClient(this);
 		this.move.setClient(this);
 		this.Bots.add(this);
 	}
@@ -126,8 +131,8 @@ public class Bot extends Client{
 							}
 							this.remoteBufferIndex -= packetLength;
 							this.remoteRecvRC4.cipher(packetBytes);
-							if(packetId!=74&&packetId!=33&&packetId!=18&&packetId!=101&&packetId!=1&&packetId!=35&&packetId!=52&&packetId!=102&&packetId!=69)
-								RealmBase.println(this,"Server -> Client: Id:"+(GetXml.getPacketMap().containsKey(String.valueOf(packetId)) ? GetXml.getPacketMap().get(String.valueOf(packetId)) : packetId));
+//							if(packetId!=74&&packetId!=33&&packetId!=18&&packetId!=101&&packetId!=1&&packetId!=35&&packetId!=52&&packetId!=102&&packetId!=69)
+								RealmBase.println(this,"Server -> Client: Id:"+(GetXml.packetMap.containsKey(String.valueOf(packetId)) ? GetXml.packetMap.get(String.valueOf(packetId)) : packetId)+" Length: "+packetBytes.length);
 							
 							Packet packet = Packet.create(packetId, packetBytes);
 							PacketManager.receive(this, packet, Type.SERVER);

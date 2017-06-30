@@ -12,4 +12,5 @@ public interface MoveClass {
 	public Location move();
 	public void setClient(Bot client);
 	public Client getClient();
+	public void reconnect();
 }

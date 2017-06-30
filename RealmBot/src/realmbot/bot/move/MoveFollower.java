@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import realmbase.Parameter;
 import realmbase.RealmBase;
+import realmbase.data.EntityData;
 import realmbase.data.Location;
 import realmbase.data.PlayerData;
 import realmbase.data.portal.PortalData;
@@ -33,31 +34,38 @@ public class MoveFollower implements MoveClass {
 	public Location move() {
 		int time = client.time()-lastMoveTime;
 		setLastMoveTime(client.time());
-		PlayerData e = followTarget.isEmpty()?null:ObjectListener.getPlayerData(getClient(), followTarget);
+		PlayerData player = followTarget.isEmpty()?null:ObjectListener.getPlayerData(getClient(), followTarget);
 	
-		if (e != null) {
-			followPosition = e.getStatus().getPosition();
-			if (teleport && e.getStatus().getPosition().distanceSquaredTo(getPosition()) > 144 && client.getMapInfo().isAllowPlayerTeleport()) {
-				client.teleport(e.getStatus().getObjectId());
+		if (player != null) {
+			followPosition = player.getStatus().getPosition();
+			if (teleport && player.getStatus().getPosition().distanceSquaredTo(getPosition()) > 144 && client.getMapInfo().isAllowPlayerTeleport()) {
+				client.teleport(player.getStatus().getObjectId());
 			}
-			if (e.getStatus().getPosition().distanceSquaredTo(getPosition()) > followDist) {
-				return getFollowPosition(time, e.getStatus().getPosition());
+			if (player.getStatus().getPosition().distanceSquaredTo(getPosition()) > followDist) {
+				return getFollowPosition(time, player.getStatus().getPosition());
 			}
 		}else{
 			if(followPosition!=null){
-				HashMap<Integer,PortalData> portals = ObjectListener.getPortals().get(client);
+				HashMap<Integer, EntityData> portals = ObjectListener.getEntities().get(client);
 				
-				for(PortalData portal : portals.values()){
-					if(portal.getStatus().getPosition().distanceTo(followPosition)<1){
-						RealmBase.println(getClient(), "Portal: "+portal.getName());
-						client.usePortal(portal);
-						followPosition = null;
-						break;
+				for(EntityData e : portals.values()){
+					if(e instanceof PortalData){
+						PortalData portal = (PortalData)e;
+						if(portal.getStatus().getPosition().distanceSquaredTo(followPosition)<1){
+							RealmBase.println(getClient(), "Portal: "+portal.getName());
+							client.usePortal(portal);
+							break;
+						}
 					}
 				}
 			}
 		}
 		return (followPosition!=null?followPosition:getPosition());
+	}
+	
+	public void reconnect(){
+		followPosition = null;
+		position = null;
 	}
 	
 	public Location getFollowPosition(float time, Location targ) {

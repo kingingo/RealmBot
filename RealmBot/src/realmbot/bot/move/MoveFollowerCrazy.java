@@ -41,14 +41,19 @@ public class MoveFollowerCrazy implements MoveClass {
 		this.change=change;
 	}
 	
+	public void reconnect(){
+		followPosition = null;
+		position = null;
+	}
+	
 	@Override
 	public Location move() {
 		if(client != null){
 			if((System.currentTimeMillis()-lastChange) > change)followTarget="";
 			PlayerData e = null;
 			
-			if(followTarget.isEmpty() && ObjectListener.getPlayers().containsKey(client)){
-				ArrayList<Sort<PlayerData>> list = UtilClient.getOrdedList(ObjectListener.getPlayers().get(client), followPosition, distance, new Callback<ArrayList<PlayerData>>() {
+			if(followTarget.isEmpty() && ObjectListener.getEntities().containsKey(client)){
+				ArrayList<Sort<PlayerData>> list = UtilClient.getOrdedList(ObjectListener.getEntities().get(client), followPosition, distance, new Callback<ArrayList<PlayerData>>() {
 					
 					@Override
 					public void call(ArrayList<PlayerData> list, Throwable exception) {

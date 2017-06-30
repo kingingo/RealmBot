@@ -4,11 +4,12 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import realmbase.GetXml;
 import realmbase.Parameter;
 import realmbase.RealmBase;
 import realmbase.data.Callback;
+import realmbase.listener.ObjectListener;
 import realmbase.utils.Milis;
+import realmbase.xml.GetXml;
 import realmbot.bot.Bot;
 import realmbot.bot.BotListener;
 import realmbot.bot.move.MoveFollower;
@@ -24,13 +25,12 @@ public class RealmBot {
 		new BotListener();
 
 		HashMap<String,String> bots = GetXml.getBotList();
-		
 		String email = (String) bots.keySet().toArray()[0];
-		Bot bot = new Bot(email,bots.get(email), new StationaryMover());
+		Bot bot = new Bot(email,bots.get(email), new MoveFollower("kingingoo"));
 		bot.connect();
 
 //		for(String email : bots.keySet()){
-//			Bot bot = new Bot(email, bots.get(email), new MoveFollowerCrazy(2, Milis.SECOND));
+//			Bot bot = new Bot(email, bots.get(email), new StationaryMover());
 //			bot.connect("EUNORTH");
 //		}
 		

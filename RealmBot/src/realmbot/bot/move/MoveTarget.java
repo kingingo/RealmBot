@@ -24,6 +24,10 @@ public class MoveTarget implements MoveClass {
 		this.reachTarget=reachTarget;
 	}
 	
+	public void reconnect(){
+		position = null;
+	}
+	
 	@Override
 	public Location move() {
 		int time = client.time()-lastMoveTime;

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import org.bouncycastle.crypto.tls.HashAlgorithm;
 
 import realmbase.Client;
-import realmbase.GetXml;
 import realmbase.data.EntityData;
 import realmbase.data.Type;
 import realmbase.data.portal.PortalData;
@@ -14,6 +13,7 @@ import realmbase.listener.PacketListener;
 import realmbase.listener.PacketManager;
 import realmbase.packets.Packet;
 import realmbase.packets.server.UpdatePacket;
+import realmbase.xml.GetXml;
 import realmbot.bot.Bot;
 
 public class SpreadListener implements PacketListener{
@@ -39,14 +39,15 @@ public class SpreadListener implements PacketListener{
 
 	@Override
 	public boolean onReceive(Client client, Packet packet, Type from) {
-		if(packet.getId() == GetXml.getPacketMapName().get("UPDATE")){
+		if(packet.getId() == GetXml.packetMapName.get("UPDATE")){
 			UpdatePacket upacket = (UpdatePacket)packet;
 			
 			for(int i = 0; i < upacket.getNewObjs().length; i++){
 				EntityData e = upacket.getNewObjs()[i];
 			
-				if(GetXml.getPortalsMap().containsKey(e.getObjectType())
-						&& GetXml.getPortalsMap().get(e.getObjectType()).equalsIgnoreCase("Nexus Portal")){
+				if(GetXml.objectMap.containsKey(e.getObjectType()) 
+						&& GetXml.objectMap.get(e.getObjectType()).portal
+						&& GetXml.objectMap.get(e.getObjectType()).id.equalsIgnoreCase("Nexus Portal")){
 					getPortalList(client, true).add( ((PortalData)e) );
 					//SEND BOT!
 				}

@@ -17,6 +17,10 @@ public class StationaryMover implements MoveClass {
 		return getPosition();
 	}
 
+	public void reconnect(){
+		position = null;
+	}
+	
 	@Override
 	public int getlastMoveTime() {
 		return lastMoveTime;
