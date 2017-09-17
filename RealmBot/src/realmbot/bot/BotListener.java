@@ -28,7 +28,7 @@ import realmbase.packets.server.Create_SuccessPacket;
 import realmbase.packets.server.FailurePacket;
 import realmbase.packets.server.GoToPacket;
 import realmbase.packets.server.MapInfoPacket;
-import realmbase.packets.server.New_TickPacket;
+import realmbase.packets.server.NewTickPacket;
 import realmbase.packets.server.PingPacket;
 import realmbase.packets.server.ReconnectPacket;
 import realmbase.packets.server.ShootPacket;
@@ -56,7 +56,7 @@ public class BotListener implements PacketListener{
 		}else if(packet.getId() == GetXml.packetMapName.get("SHOOT")){
 			client.sendPacketToServer(new ShootAckPacket(client.time()));
 		}else if(packet.getId() == GetXml.packetMapName.get("NEW_TICK")){
-			New_TickPacket ntpacket = (New_TickPacket)packet;
+			NewTickPacket ntpacket = (NewTickPacket)packet;
 			
 			if(client.getMove().getPosition() == null){
 				for(Status s: ntpacket.getStatuses()){
