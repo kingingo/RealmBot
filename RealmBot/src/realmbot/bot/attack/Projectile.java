@@ -6,7 +6,7 @@ import realmbase.RealmBase;
 import realmbase.data.EntityData;
 import realmbase.data.Location;
 import realmbase.data.PlayerData;
-import realmbase.listener.ObjectListener;
+import realmbase.listener.PacketListener;
 import realmbase.packets.client.EnemyHitPacket;
 import realmbase.packets.client.PlayerHitPacket;
 import realmbase.packets.client.PlayerShootPacket;
@@ -48,7 +48,7 @@ class Projectile{
 		location.y -= timePerFrame * (pdata.speed/10f) * Math.cos(Math.toRadians(angle));
 		life+=timePerFrame;
 		
-		HashMap<Integer,EntityData> entities = ObjectListener.getEntities().get(attack.getClient());
+		HashMap<Integer,EntityData> entities = PacketListener.getEntities().get(attack.getClient());
 		
 		if(entities!=null){
 			EntityData e;

@@ -2,8 +2,8 @@ package realmbot.bot.move;
 
 import lombok.Getter;
 import lombok.Setter;
+import realmbase.Client;
 import realmbase.Parameter;
-import realmbase.RealmBase;
 import realmbase.data.Callback;
 import realmbase.data.Location;
 import realmbot.bot.Bot;
@@ -20,7 +20,12 @@ public class MoveTarget implements MoveClass {
 	public MoveTarget() {}
 	
 	public MoveTarget(Location target, Callback<MoveTarget> reachTarget) {
+		this(null,target,reachTarget);
+	}
+	
+	public MoveTarget(Bot client, Location target, Callback<MoveTarget> reachTarget) {
 		this.target=target;
+		this.client=client;
 		this.reachTarget=reachTarget;
 	}
 	

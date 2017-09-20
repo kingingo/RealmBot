@@ -12,6 +12,12 @@ public class StationaryMover implements MoveClass {
 	private int lastMoveTime;
 	private Bot client;
 
+	public StationaryMover(){}
+	
+	public StationaryMover(Bot client){
+		this.client=client;
+	}
+	
 	@Override
 	public Location move() {
 		return getPosition();

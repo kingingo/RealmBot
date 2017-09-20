@@ -10,7 +10,7 @@ import realmbase.data.EntityData;
 import realmbase.data.Location;
 import realmbase.data.PlayerData;
 import realmbase.data.portal.PortalData;
-import realmbase.listener.ObjectListener;
+import realmbase.listener.PacketListener;
 import realmbot.bot.Bot;
 
 @Getter
@@ -27,14 +27,19 @@ public class MoveFollower implements MoveClass {
 	public MoveFollower() {}
 	
 	public MoveFollower(String followTarget) {
+		this(null,followTarget);
+	}
+	
+	public MoveFollower(Bot client, String followTarget) {
 		this.followTarget=followTarget;
+		this.client=client;
 	}
 	
 	@Override
 	public Location move() {
 		int time = client.time()-lastMoveTime;
 		setLastMoveTime(client.time());
-		PlayerData player = followTarget.isEmpty()?null:ObjectListener.getPlayerData(getClient(), followTarget);
+		PlayerData player = followTarget.isEmpty()?null:PacketListener.getPlayerData(getClient(), followTarget);
 	
 		if (player != null) {
 			followPosition = player.getStatus().getPosition();
@@ -46,7 +51,7 @@ public class MoveFollower implements MoveClass {
 			}
 		}else{
 			if(followPosition!=null){
-				HashMap<Integer, EntityData> portals = ObjectListener.getEntities().get(client);
+				HashMap<Integer, EntityData> portals = PacketListener.getEntities().get(client);
 				
 				for(EntityData e : portals.values()){
 					if(e instanceof PortalData){

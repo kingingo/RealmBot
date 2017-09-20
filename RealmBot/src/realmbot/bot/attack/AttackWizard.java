@@ -9,7 +9,7 @@ import realmbase.RealmBase;
 import realmbase.data.EntityData;
 import realmbase.data.Location;
 import realmbase.list.Sort;
-import realmbase.listener.ObjectListener;
+import realmbase.listener.PacketListener;
 import realmbase.utils.Milis;
 import realmbase.utils.UtilClient;
 import realmbase.xml.GetXml;
@@ -56,9 +56,9 @@ public class AttackWizard implements AttackClass,Runnable{
 					}
 				}
 				
-				if(((System.currentTimeMillis()-nextShoot) > Milis.SECOND * 0.01) && client.getMove().getPosition()!= null && ObjectListener.get(client)!=null){
+				if(((System.currentTimeMillis()-nextShoot) > Milis.SECOND * 0.01) && client.getMove().getPosition()!= null && PacketListener.get(client)!=null){
 					nextShoot = System.currentTimeMillis();
-					ArrayList<Sort<EntityData>> list = UtilClient.getOrdedEntityList((HashMap<Integer,EntityData>)ObjectListener.get(client).clone(), client.getMove().getPosition().clone(), 8.5);
+					ArrayList<Sort<EntityData>> list = UtilClient.getOrdedEntityList((HashMap<Integer,EntityData>)PacketListener.get(client).clone(), client.getMove().getPosition().clone(), 8.5);
 
 					RealmBase.println(client,"Found: "+list.size());
 					if(!list.isEmpty()){

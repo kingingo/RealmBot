@@ -1,21 +1,17 @@
 package realmbot;
 
-import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import realmbase.Parameter;
 import realmbase.RealmBase;
 import realmbase.data.Callback;
-import realmbase.listener.ObjectListener;
-import realmbase.utils.Milis;
 import realmbase.xml.GetXml;
 import realmbot.bot.Bot;
 import realmbot.bot.BotListener;
 import realmbot.bot.move.MoveFollower;
-import realmbot.bot.move.MoveFollowerCrazy;
 import realmbot.bot.move.MoveTarget;
 import realmbot.bot.move.StationaryMover;
+import realmbot.listener.SpreadListener;
 
 public class RealmBot {
 
@@ -23,16 +19,11 @@ public class RealmBot {
 		RealmBase.init();
 		RealmBase.println("starting...");
 		new BotListener();
-
-		HashMap<String,String> bots = GetXml.getBotList();
-		String email = (String) bots.keySet().toArray()[0];
-		Bot bot = new Bot(email,bots.get(email), new MoveFollower("kingingoo"));
+		
+//		new SpreadListener();
+		
+		Bot bot = new Bot("kingingohd@gmail.com","e8PKU1dSVNvKiXmEKKEq", new MoveFollower("Kingingo"));
 		bot.connect();
-
-//		for(String email : bots.keySet()){
-//			Bot bot = new Bot(email, bots.get(email), new StationaryMover());
-//			bot.connect("EUNORTH");
-//		}
 		
 		boolean con = true;
 		while (con) {

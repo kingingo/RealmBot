@@ -2,20 +2,15 @@ package realmbot.bot.move;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.function.Consumer;
 
 import lombok.Getter;
 import lombok.Setter;
-import realmbase.Client;
 import realmbase.Parameter;
-import realmbase.RealmBase;
 import realmbase.data.Callback;
 import realmbase.data.Location;
 import realmbase.data.PlayerData;
-import realmbase.data.portal.PortalData;
 import realmbase.list.Sort;
-import realmbase.listener.ObjectListener;
+import realmbase.listener.PacketListener;
 import realmbase.utils.Milis;
 import realmbase.utils.UtilClient;
 import realmbot.bot.Bot;
@@ -36,8 +31,14 @@ public class MoveFollowerCrazy implements MoveClass {
 	
 	public MoveFollowerCrazy() {}
 	
+
 	public MoveFollowerCrazy(long distance, long change) {
+		this(null,distance,change);
+	}
+	
+	public MoveFollowerCrazy(Bot client, long distance, long change) {
 		this.distance=distance;
+		this.client=client;
 		this.change=change;
 	}
 	
@@ -52,8 +53,8 @@ public class MoveFollowerCrazy implements MoveClass {
 			if((System.currentTimeMillis()-lastChange) > change)followTarget="";
 			PlayerData e = null;
 			
-			if(followTarget.isEmpty() && ObjectListener.getEntities().containsKey(client)){
-				ArrayList<Sort<PlayerData>> list = UtilClient.getOrdedList(ObjectListener.getEntities().get(client), followPosition, distance, new Callback<ArrayList<PlayerData>>() {
+			if(followTarget.isEmpty() && PacketListener.getEntities().containsKey(client)){
+				ArrayList<Sort<PlayerData>> list = UtilClient.getOrdedList(PacketListener.getEntities().get(client), followPosition, distance, new Callback<ArrayList<PlayerData>>() {
 					
 					@Override
 					public void call(ArrayList<PlayerData> list, Throwable exception) {
@@ -77,7 +78,7 @@ public class MoveFollowerCrazy implements MoveClass {
 					lastChange = System.currentTimeMillis();
 				}
 			}else{
-				e = followTarget.isEmpty()?null:ObjectListener.getPlayerData(getClient(), followTarget);
+				e = followTarget.isEmpty()?null:PacketListener.getPlayerData(getClient(), followTarget);
 			}
 			
 			int time = client.time()-lastMoveTime;
