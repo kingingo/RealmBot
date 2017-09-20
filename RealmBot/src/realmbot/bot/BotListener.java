@@ -11,10 +11,11 @@ import realmbase.data.Status;
 import realmbase.event.EventHandler;
 import realmbase.event.EventListener;
 import realmbase.event.EventManager;
-import realmbase.event.events.AllyShootEvent;
 import realmbase.event.events.CharakterDeadEvent;
 import realmbase.event.events.PacketReceiveEvent;
 import realmbase.event.events.ServerFullEvent;
+import realmbase.event.events.ShootEvent;
+import realmbase.event.events.ShootEvent.ShootType;
 import realmbase.listener.PacketListener;
 import realmbase.packets.Packet;
 import realmbase.packets.client.CreatePacket;
@@ -27,11 +28,13 @@ import realmbase.packets.client.PongPacket;
 import realmbase.packets.client.ShootAckPacket;
 import realmbase.packets.client.UpdateAckPacket;
 import realmbase.packets.server.AllyShootPacket;
+import realmbase.packets.server.EnemyShootPacket;
 import realmbase.packets.server.FailurePacket;
 import realmbase.packets.server.MapInfoPacket;
 import realmbase.packets.server.NewTickPacket;
 import realmbase.packets.server.PingPacket;
 import realmbase.packets.server.ReconnectPacket;
+import realmbase.packets.server.ServerPlayerShootPacket;
 import realmbase.packets.server.TextPacket;
 import realmbase.packets.server.UpdatePacket;
 import realmbase.xml.GetUrl;
@@ -59,35 +62,55 @@ public class BotListener implements EventListener{
 			}
 		}
 		else if(packet.getId() == GetXml.packetMapName.get("SERVERPLAYERSHOOT")){
-//			ServerPlayerShootPacket spacket = (ServerPlayerShootPacket)packet;
-//			RealmBase.println(client,"ShootPackets -> "+spacket.toString());
-//			client.sendPacketToServer(new ShootAckPacket(client.time()));
-//			ProjectileData projectileData = GetXml.itemMap.get(spacket.getBulletType()).projectiles.get(0);
-//			EventManager.callEvent(
-//					new AllyShootEvent(spacket.getBulletId()
-//							,spacket.getOwnerId()
-//							,spacket.getBulletType()
-//							,spacket.getStartingPos()
-//							,spacket.getAngleInc()
-//							,spacket.getDamage()
-//							,projectileData
-//							,client));
-		}else if(packet.getId() == GetXml.packetMapName.get("ALLYSHOOT")){
-			AllyShootPacket spacket = (AllyShootPacket)packet;
-//			RealmBase.println(client, "AllyShoot ID: "+spacket.getContainerType()+" "+spacket.getBulletId()+" "+GetXml.itemMap.containsKey(Integer.valueOf(spacket.getContainerType())));
+			ServerPlayerShootPacket spacket = (ServerPlayerShootPacket)packet;
 			if(GetXml.itemMap.containsKey(Integer.valueOf(spacket.getContainerType()))){
 				ProjectileData projectileData = GetXml.itemMap.get(Integer.valueOf(spacket.getContainerType())).projectiles.get(0);
 				EventManager.callEvent(
-						new AllyShootEvent(spacket.getBulletId()
+						new ShootEvent(ShootType.SERVER
+								,spacket.getBulletId()
 								,spacket.getOwnerId()
 								,Integer.valueOf(spacket.getContainerType())
 								,PacketListener.getPlayerData(client, spacket.getOwnerId()).getStatus().getPosition()
 								,spacket.getAngle()
 								,projectileData
 								,client));
+			}else{
+				RealmBase.println(client, "ServerPlayerShootPacket ID: "+spacket.getContainerType()+" "+spacket.getBulletId()+" "+GetXml.itemMap.containsKey(Integer.valueOf(spacket.getContainerType())));
 			}
-			
+			client.sendPacketToServer(new ShootAckPacket(client.time()));
+		}else if(packet.getId() == GetXml.packetMapName.get("ALLYSHOOT")){
+			AllyShootPacket spacket = (AllyShootPacket)packet;
+//			RealmBase.println(client, "AllyShoot ID: "+spacket.getContainerType()+" "+spacket.getBulletId()+" "+GetXml.itemMap.containsKey(Integer.valueOf(spacket.getContainerType())));
+			if(GetXml.itemMap.containsKey(Integer.valueOf(spacket.getContainerType()))){
+				ProjectileData projectileData = GetXml.itemMap.get(Integer.valueOf(spacket.getContainerType())).projectiles.get(0);
+				EventManager.callEvent(
+						new ShootEvent(ShootType.PLAYER
+								,spacket.getBulletId()
+								,spacket.getOwnerId()
+								,Integer.valueOf(spacket.getContainerType())
+								,PacketListener.getPlayerData(client, spacket.getOwnerId()).getStatus().getPosition()
+								,spacket.getAngle()
+								,projectileData
+								,client));
+			}else{
+				RealmBase.println(client, "AllyShoot ID: "+spacket.getContainerType()+" "+spacket.getBulletId()+" "+GetXml.itemMap.containsKey(Integer.valueOf(spacket.getContainerType())));
+			}
 		}else if(packet.getId() == GetXml.packetMapName.get("ENEMYSHOOT")){
+			EnemyShootPacket spacket = (EnemyShootPacket)packet;
+			if(GetXml.itemMap.containsKey(Integer.valueOf(spacket.getContainerType()))){
+				ProjectileData projectileData = GetXml.itemMap.get(Integer.valueOf(spacket.getContainerType())).projectiles.get(0);
+				EventManager.callEvent(
+						new ShootEvent(ShootType.ENEMY
+								,spacket.getBulletId()
+								,spacket.getOwnerId()
+								,Integer.valueOf(spacket.getContainerType())
+								,PacketListener.getPlayerData(client, spacket.getOwnerId()).getStatus().getPosition()
+								,spacket.getAngle()
+								,projectileData
+								,client));
+			}else{
+				RealmBase.println(client, "ServerPlayerShootPacket ID: "+spacket.getContainerType()+" "+spacket.getBulletId()+" "+GetXml.itemMap.containsKey(Integer.valueOf(spacket.getContainerType())));
+			}
 			client.sendPacketToServer(new ShootAckPacket(client.time()));
 		}else if(packet.getId() == GetXml.packetMapName.get("NEWTICK")){
 			NewTickPacket ntpacket = (NewTickPacket)packet;

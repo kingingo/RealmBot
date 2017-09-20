@@ -144,7 +144,7 @@ public class Bot extends Client{
 								&& packetId != GetXml.packetMapName.get("SHOOT")
 								&& packetId != GetXml.packetMapName.get("ALLYSHOOT")
 								&& packetId != GetXml.packetMapName.get("ENEMYSHOOT"))
-								RealmBase.println("Server->Client: P:"+(GetXml.packetMap.containsKey(String.valueOf(packetId)) ? GetXml.packetMap.get(String.valueOf(packetId)) : packetId)+" Id:"+packetId+" Length: "+packetBytes.length);
+								RealmBase.println("Server->Client: P:"+(GetXml.packetMap.containsKey(String.valueOf(packetId)) ? GetXml.packetMap.get(String.valueOf(packetId)) : packetId)+" Id:"+packetId+" L:"+packetBytes.length);
 							
 							Packet packet = Packet.create(packetId, packetBytes);
 							EventManager.callEvent(new PacketReceiveEvent(packet,Type.SERVER,this,false));

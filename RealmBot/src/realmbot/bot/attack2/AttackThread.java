@@ -3,11 +3,10 @@ package realmbot.bot.attack2;
 import java.util.ArrayList;
 
 import lombok.Setter;
-import realmbase.RealmBase;
 import realmbase.event.EventHandler;
 import realmbase.event.EventListener;
 import realmbase.event.EventManager;
-import realmbase.event.events.AllyShootEvent;
+import realmbase.event.events.ShootEvent;
 import realmbot.bot.Bot;
 
 public class AttackThread implements Runnable,EventListener {
@@ -38,7 +37,7 @@ public class AttackThread implements Runnable,EventListener {
 	}
 	
 	@EventHandler
-	public void ProjectileShoot(AllyShootEvent event){
+	public void ProjectileShoot(ShootEvent event){
 		Projectile projectile = new Projectile(((Bot)client).time(),event.getOwnerId(), event.getBulletId(),event.getStartingPos(), event.getAngle(), 1, event.getProjectileData());
 		this.projectiles.add(projectile);
 	}
