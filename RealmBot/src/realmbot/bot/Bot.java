@@ -27,7 +27,7 @@ import realmbase.packets.client.UsePortalPacket;
 import realmbase.packets.server.MapInfoPacket;
 import realmbase.xml.GetUrl;
 import realmbase.xml.GetXml;
-import realmbot.bot.attack2.AttackThread;
+import realmbot.bot.attack.AttackThread;
 import realmbot.bot.move.MoveClass;
 
 @Getter
@@ -141,7 +141,6 @@ public class Bot extends Client{
 								&& packetId != GetXml.packetMapName.get("NOTIFICATION")
 								&& packetId != GetXml.packetMapName.get("DAMAGE")
 								&& packetId != GetXml.packetMapName.get("SERVERPLAYERSHOOT")
-								&& packetId != GetXml.packetMapName.get("SHOOT")
 								&& packetId != GetXml.packetMapName.get("ALLYSHOOT")
 								&& packetId != GetXml.packetMapName.get("ENEMYSHOOT"))
 								RealmBase.println("Server->Client: P:"+(GetXml.packetMap.containsKey(String.valueOf(packetId)) ? GetXml.packetMap.get(String.valueOf(packetId)) : packetId)+" Id:"+packetId+" L:"+packetBytes.length);

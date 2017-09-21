@@ -1,4 +1,4 @@
-package realmbot.bot.attack2;
+package realmbot.bot.attack;
 
 import java.util.ArrayList;
 

@@ -39,6 +39,7 @@ import realmbase.packets.server.TextPacket;
 import realmbase.packets.server.UpdatePacket;
 import realmbase.xml.GetUrl;
 import realmbase.xml.GetXml;
+import realmbase.xml.datas.ItemData;
 import realmbase.xml.datas.ProjectileData;
 
 public class BotListener implements EventListener{
@@ -63,8 +64,8 @@ public class BotListener implements EventListener{
 		}
 		else if(packet.getId() == GetXml.packetMapName.get("SERVERPLAYERSHOOT")){
 			ServerPlayerShootPacket spacket = (ServerPlayerShootPacket)packet;
-			if(GetXml.itemMap.containsKey(Integer.valueOf(spacket.getContainerType()))){
-				ProjectileData projectileData = GetXml.itemMap.get(Integer.valueOf(spacket.getContainerType())).projectiles.get(0);
+			if(GetXml.objectMap.containsKey(Integer.valueOf(spacket.getContainerType()))){
+				ProjectileData projectileData = ((ItemData)GetXml.objectMap.get(Integer.valueOf(spacket.getContainerType()))).projectiles.get(0);
 				EventManager.callEvent(
 						new ShootEvent(ShootType.SERVER
 								,spacket.getBulletId()
@@ -75,14 +76,14 @@ public class BotListener implements EventListener{
 								,projectileData
 								,client));
 			}else{
-				RealmBase.println(client, "ServerPlayerShootPacket ID: "+spacket.getContainerType()+" "+spacket.getBulletId()+" "+GetXml.itemMap.containsKey(Integer.valueOf(spacket.getContainerType())));
+				RealmBase.println(client, "ServerPlayerShootPacket ID: 0x"+ Integer.toHexString(spacket.getContainerType())+ " "+spacket.getContainerType()+" "+spacket.getBulletId()+" "+GetXml.objectMap.containsKey(Integer.valueOf(spacket.getContainerType())));
 			}
 			client.sendPacketToServer(new ShootAckPacket(client.time()));
 		}else if(packet.getId() == GetXml.packetMapName.get("ALLYSHOOT")){
 			AllyShootPacket spacket = (AllyShootPacket)packet;
 //			RealmBase.println(client, "AllyShoot ID: "+spacket.getContainerType()+" "+spacket.getBulletId()+" "+GetXml.itemMap.containsKey(Integer.valueOf(spacket.getContainerType())));
-			if(GetXml.itemMap.containsKey(Integer.valueOf(spacket.getContainerType()))){
-				ProjectileData projectileData = GetXml.itemMap.get(Integer.valueOf(spacket.getContainerType())).projectiles.get(0);
+			if(GetXml.objectMap.containsKey(Integer.valueOf(spacket.getContainerType()))){
+				ProjectileData projectileData = ((ItemData)GetXml.objectMap.get(Integer.valueOf(spacket.getContainerType()))).projectiles.get(0);
 				EventManager.callEvent(
 						new ShootEvent(ShootType.PLAYER
 								,spacket.getBulletId()
@@ -93,12 +94,12 @@ public class BotListener implements EventListener{
 								,projectileData
 								,client));
 			}else{
-				RealmBase.println(client, "AllyShoot ID: "+spacket.getContainerType()+" "+spacket.getBulletId()+" "+GetXml.itemMap.containsKey(Integer.valueOf(spacket.getContainerType())));
+				RealmBase.println(client, "AllyShoot ID: 0x"+ Integer.toHexString(spacket.getContainerType())+ " "+spacket.getContainerType()+" "+spacket.getBulletId()+" "+GetXml.objectMap.containsKey(Integer.valueOf(spacket.getContainerType())));
 			}
 		}else if(packet.getId() == GetXml.packetMapName.get("ENEMYSHOOT")){
 			EnemyShootPacket spacket = (EnemyShootPacket)packet;
-			if(GetXml.itemMap.containsKey(Integer.valueOf(spacket.getContainerType()))){
-				ProjectileData projectileData = GetXml.itemMap.get(Integer.valueOf(spacket.getContainerType())).projectiles.get(0);
+			if(GetXml.objectMap.containsKey(Integer.valueOf(spacket.getContainerType()))){
+				ProjectileData projectileData = ((ItemData)GetXml.objectMap.get(Integer.valueOf(spacket.getContainerType()))).projectiles.get(0);
 				EventManager.callEvent(
 						new ShootEvent(ShootType.ENEMY
 								,spacket.getBulletId()
@@ -109,7 +110,7 @@ public class BotListener implements EventListener{
 								,projectileData
 								,client));
 			}else{
-				RealmBase.println(client, "ServerPlayerShootPacket ID: "+spacket.getContainerType()+" "+spacket.getBulletId()+" "+GetXml.itemMap.containsKey(Integer.valueOf(spacket.getContainerType())));
+				RealmBase.println(client, "EnemyShootPacket ID: 0x"+ Integer.toHexString(spacket.getContainerType())+ " "+spacket.getContainerType()+" "+spacket.getBulletId()+" "+GetXml.objectMap.containsKey(Integer.valueOf(spacket.getContainerType())));
 			}
 			client.sendPacketToServer(new ShootAckPacket(client.time()));
 		}else if(packet.getId() == GetXml.packetMapName.get("NEWTICK")){

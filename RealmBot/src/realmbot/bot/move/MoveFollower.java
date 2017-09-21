@@ -51,7 +51,7 @@ public class MoveFollower implements MoveClass {
 			}
 		}else{
 			if(followPosition!=null){
-				HashMap<Integer, EntityData> portals = PacketListener.getEntities().get(client);
+				HashMap<Integer, EntityData> portals = PacketListener.getClone(client);
 				
 				for(EntityData e : portals.values()){
 					if(e instanceof PortalData){
