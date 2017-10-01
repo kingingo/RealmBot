@@ -48,7 +48,7 @@ public class SpreadListener implements EventListener{
 			//Fügt alle Server zu der Bot liste hinzu damit spare ich mir eine Überprüfung
 			bots.put(server, new HashMap<Bot, PortalData>());
 			
-			Bot bot = getFreeBot();
+			final Bot bot = getFreeBot();
 			if(bot!=null){
 				//Zur Lobby Bot liste hinzufügen
 				lobbyBots.put(server, bot);
@@ -137,7 +137,7 @@ public class SpreadListener implements EventListener{
 		}
 	}
 	
-	public void sendBotPortal(Bot bot,PortalData portal,String server){
+	public void sendBotPortal(final Bot bot,final PortalData portal,String server){
 		//Bewegt sich zu den Portalen der Unter Server
 		bot.setMove(new MoveTarget(realmbase.Parameter.PORTAL_POS, new Callback<MoveTarget>() {
 			

@@ -90,7 +90,7 @@ public class Bot extends Client{
 		connect(new HelloPacket(username, password), adress);
 	}
 	
-	public void connect(HelloPacket packet, InetSocketAddress adress){
+	public void connect(final HelloPacket packet, InetSocketAddress adress){
 		connect(adress, new Callback<Client>() {
 			
 			@Override
