@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import realmbase.RealmBase;
 import realmbase.data.Callback;
+import realmbase.frame.ClientsFrame;
 import realmbase.xml.GetXml;
 import realmbot.bot.Bot;
 import realmbot.bot.BotListener;
@@ -19,13 +20,14 @@ public class RealmBot {
 		RealmBase.init();
 		RealmBase.println("starting...");
 		new BotListener();
+		new ClientsFrame();
 		
 		HashMap<String,String> list = GetXml.getBotList();
 		Bot bot;
 		for(String mail : list.keySet()){
 			bot = new Bot(mail, list.get(mail), new MoveFollower("Kingingo"));
 			bot.connect();
-			
+			break;
 		}
 		
 //		new SpreadListener();
