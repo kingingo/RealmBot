@@ -48,8 +48,8 @@ public class Bot extends Client{
 		this.password=password;
 		this.accountData=GetUrl.loadAccount(username, password);
 		this.move=move;
-		this.attack=new AttackThread();
-		this.attack.setClient(this);
+//		this.attack=new AttackThread();
+//		this.attack.setClient(this);
 		if(move!=null)this.move.setClient(this);
 		this.Bots.add(this);
 	}

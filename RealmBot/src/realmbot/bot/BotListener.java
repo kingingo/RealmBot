@@ -12,6 +12,7 @@ import realmbase.event.EventHandler;
 import realmbase.event.EventListener;
 import realmbase.event.EventManager;
 import realmbase.event.events.CharakterDeadEvent;
+import realmbase.event.events.ClientMoveEvent;
 import realmbase.event.events.PacketReceiveEvent;
 import realmbase.event.events.ServerFullEvent;
 import realmbase.event.events.ShootEvent;
@@ -116,10 +117,12 @@ public class BotListener implements EventListener{
 		}else if(packet.getId() == GetXml.packetMapName.get("NEWTICK")){
 			NewTickPacket ntpacket = (NewTickPacket)packet;
 			
+			//Postion vom Client ist nicht bekannt
 			if(client.getMove().getPosition() == null){
 				for(Status s: ntpacket.getStatuses()){
 					if(s.getObjectId() == client.getClientId()){
 						client.getMove().setPosition(s.getPosition());
+						client.setClientJPanel(s.getPosition());
 //						RealmBase.println(client,"Save Position!");
 						break;
 					}
@@ -133,6 +136,7 @@ public class BotListener implements EventListener{
 				mpacket.setNewPosition(client.getMove().move());
 				mpacket.setRecords(new LocationRecord[0]);
 //				RealmBase.println(client,"Answering to NewTickPacket -> MovePacket ");
+				EventManager.callEvent(new ClientMoveEvent(client.getClientId() ,mpacket.getNewPosition()));
 				client.sendPacketToServer(mpacket);
 			}else{
 //				RealmBase.println(client,"I don't know where I am!");

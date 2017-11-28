@@ -20,10 +20,18 @@ public class RealmBot {
 		RealmBase.println("starting...");
 		new BotListener();
 		
+		HashMap<String,String> list = GetXml.getBotList();
+		Bot bot;
+		for(String mail : list.keySet()){
+			bot = new Bot(mail, list.get(mail), new MoveFollower("Kingingo"));
+			bot.connect();
+			
+		}
+		
 //		new SpreadListener();
 		
-		Bot bot = new Bot("kingingohd@gmail.com","e8PKU1dSVNvKiXmEKKEq", new MoveFollower("Kingingo"));
-		bot.connect();
+//		Bot bot = new Bot("kingingohd@gmail.com","e8PKU1dSVNvKiXmEKKEq", new MoveFollower("Kingingo"));
+//		bot.connect();
 		
 		boolean con = true;
 		while (con) {
