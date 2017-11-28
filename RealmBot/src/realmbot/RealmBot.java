@@ -4,15 +4,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import realmbase.RealmBase;
-import realmbase.data.Callback;
-import realmbase.frame.ClientsFrame;
 import realmbase.xml.GetXml;
 import realmbot.bot.Bot;
 import realmbot.bot.BotListener;
 import realmbot.bot.move.MoveFollower;
-import realmbot.bot.move.MoveTarget;
-import realmbot.bot.move.StationaryMover;
-import realmbot.listener.SpreadListener;
 
 public class RealmBot {
 
@@ -20,7 +15,6 @@ public class RealmBot {
 		RealmBase.init();
 		RealmBase.println("starting...");
 		new BotListener();
-		new ClientsFrame();
 		
 		HashMap<String,String> list = GetXml.getBotList();
 		Bot bot;

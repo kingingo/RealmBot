@@ -122,7 +122,6 @@ public class BotListener implements EventListener{
 				for(Status s: ntpacket.getStatuses()){
 					if(s.getObjectId() == client.getClientId()){
 						client.getMove().setPosition(s.getPosition());
-						client.setClientJPanel(s.getPosition());
 //						RealmBase.println(client,"Save Position!");
 						break;
 					}
@@ -136,7 +135,7 @@ public class BotListener implements EventListener{
 				mpacket.setNewPosition(client.getMove().move());
 				mpacket.setRecords(new LocationRecord[0]);
 //				RealmBase.println(client,"Answering to NewTickPacket -> MovePacket ");
-				EventManager.callEvent(new ClientMoveEvent(client.getClientId() ,mpacket.getNewPosition()));
+				EventManager.callEvent(new ClientMoveEvent(client ,mpacket.getNewPosition()));
 				client.sendPacketToServer(mpacket);
 			}else{
 //				RealmBase.println(client,"I don't know where I am!");
